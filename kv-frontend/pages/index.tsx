@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import BlockchainSearch from "../components/BlockchainSearch";
 import Footer from "../components/Footer";
+// import Result from "../model/Result";
 import styles from "../styles/Home.module.scss";
 
 const Home: NextPage = () => {
@@ -25,5 +26,17 @@ const Home: NextPage = () => {
     </div>
   );
 };
+
+// export async function getServerSideProps() {
+//   // Call an external API endpoint to get posts
+//   const res = await fetch(process.env.BACKEND_URL);
+//   const lastAddedBlocks = (await res.json()) as Result<Block>;
+
+//   return {
+//     props: {
+//       lastAddedBlocks,
+//     },
+//   };
+// }
 
 export default Home;
