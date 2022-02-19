@@ -1,8 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import BlockchainSearch from "../components/BlockchainSearch";
-import Footer from "../components/Footer";
-// import Result from "../model/Result";
 import styles from "../styles/Home.module.scss";
 
 const Home: NextPage = () => {
@@ -18,11 +16,7 @@ const Home: NextPage = () => {
         <h1 className={styles.title}>Block Explorer</h1>
 
         <BlockchainSearch />
-
-        <div className={styles.grid}></div>
       </main>
-
-      <Footer />
     </div>
   );
 };

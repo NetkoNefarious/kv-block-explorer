@@ -1,0 +1,9 @@
+.searchBar {
+  display: none !important;
+}
+
+@media only screen and (min-width: 768px) {
+  .searchBar {
+    display: block !important;
+  }
+}

@@ -5,7 +5,6 @@ import {
   Select,
   Input,
   InputOnChangeData,
-  ButtonProps,
   DropdownProps,
 } from "semantic-ui-react";
 
