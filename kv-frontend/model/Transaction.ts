@@ -35,7 +35,7 @@ export default interface Transaction {
   weight: number;
   locktime: number;
   vin: Vin[];
-  vout?: Vout[];
+  vout: Vout[];
   hex: string;
   blockhash: string;
   confirmations: number;

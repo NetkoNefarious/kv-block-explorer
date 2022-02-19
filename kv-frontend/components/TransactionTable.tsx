@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 import { Table } from "semantic-ui-react";
 import Transaction from "../model/Transaction";
@@ -14,18 +16,19 @@ const TransactionTable = ({
 }: TransactionTableProps) => {
   const time = new Date(transaction.time * 1000);
 
-  const totalInput =
-    inputTransactions
-      .flatMap((v) => (v ? v.vout?.map((vo) => vo.value) : []))
-      .reduce((prev, curr) => prev ?? 0 + (curr ?? 0), 0) ?? 0;
+  const totalInput = inputTransactions
+    .flatMap((v) => v.vout?.map((vo) => vo.value))
+    .reduce((prev, curr) => prev ?? 0 + (curr ?? 0), 0);
 
   const totalOutput =
     transaction.vout
       ?.map((v) => v.value)
       .reduce((prev, curr) => prev + curr, 0) ?? 0;
 
+  const router = useRouter();
+
   return (
-    <Table basic="very" className={tableStyles.table}>
+    <Table inverted className={tableStyles.table}>
       <Table.Body>
         <Table.Row>
           <Table.HeaderCell>Hash</Table.HeaderCell>
@@ -36,8 +39,12 @@ const TransactionTable = ({
           <Table.Cell>{time.toLocaleString("hr-HR")}</Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.HeaderCell>Block height</Table.HeaderCell>
-          <Table.Cell>{totalInput - totalOutput} BTC</Table.Cell>
+          <Table.HeaderCell>Block hash</Table.HeaderCell>
+          <Table.Cell>
+            <Link href={`/block/${transaction.blockhash}`}>
+              {transaction.blockhash}
+            </Link>
+          </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.HeaderCell>Input</Table.HeaderCell>
@@ -53,7 +60,9 @@ const TransactionTable = ({
         </Table.Row>
         <Table.Row>
           <Table.HeaderCell>Status</Table.HeaderCell>
-          <Table.Cell>{transaction.confirmations > 0} BTC</Table.Cell>
+          <Table.Cell>
+            {transaction.confirmations > 0 ? "Confirmed" : "Not confirmed"}
+          </Table.Cell>
         </Table.Row>
       </Table.Body>
     </Table>

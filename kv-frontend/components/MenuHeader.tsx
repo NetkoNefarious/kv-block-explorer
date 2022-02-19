@@ -9,7 +9,7 @@ const MenuHeader = () => {
 
   return (
     <div className={styles.header}>
-      <Menu pointing>
+      <Menu pointing inverted>
         <Menu.Item name="home" onClick={() => router.push("/")}>
           <h3>Home</h3>
         </Menu.Item>

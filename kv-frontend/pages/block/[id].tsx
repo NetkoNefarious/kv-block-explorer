@@ -10,10 +10,12 @@ export type BlockProps = {
 
 const Block = ({ blockStats }: BlockProps) => {
   return (
-    <main className={styles.main}>
-      <h1 className={styles.title}>Block search results</h1>
-      <BlockTable blockStats={blockStats} />
-    </main>
+    <div className={styles.container}>
+      <main className={styles.main}>
+        <h1 className={styles.title}>Block search results</h1>
+        <BlockTable blockStats={blockStats} />
+      </main>
+    </div>
   );
 };
 
