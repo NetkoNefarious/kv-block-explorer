@@ -8,7 +8,7 @@ const MenuHeader = () => {
   const router = useRouter();
 
   return (
-    <div className="header">
+    <div className={styles.header}>
       <Menu pointing>
         <Menu.Item name="home" onClick={() => router.push("/")}>
           <h3>Home</h3>

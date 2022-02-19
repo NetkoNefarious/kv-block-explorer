@@ -8,14 +8,16 @@ interface Vin {
   vout: number;
   scriptSig: ScriptSig;
   sequence: number;
+  txinwitness?: string;
+  coinbase?: string;
 }
 
 interface ScriptPubKey {
   asm: string;
   hex: string;
-  reqSigs: number;
+  reqSigs?: number;
   type: string;
-  addresses: string[];
+  addresses?: string[];
 }
 
 interface Vout {
@@ -33,7 +35,7 @@ export default interface Transaction {
   weight: number;
   locktime: number;
   vin: Vin[];
-  vout: Vout[];
+  vout?: Vout[];
   hex: string;
   blockhash: string;
   confirmations: number;

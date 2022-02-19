@@ -1,19 +1,25 @@
 import type { GetServerSideProps } from "next";
-import DataTable from "../../components/DataTable";
+import TransactionTable from "../../components/TransactionTable";
 import Result from "../../model/Result";
 import Transaction from "../../model/Transaction";
+import styles from "../../styles/Container.module.scss";
 
 type TransactionProps = {
   transaction: Transaction;
+  inputTransactions: Transaction[];
 };
 
-const txToData = (transaction: Transaction) => ({
-  id: transaction.txid,
-  hash: transaction.hash,
-});
-
-const Transaction = ({ transaction }: TransactionProps) => {
-  return <DataTable object={txToData(transaction)} />;
+const Transaction = ({ transaction, inputTransactions }: TransactionProps) => {
+  return (
+    <main className={styles.main}>
+      <h1 className={styles.title}>Transaction</h1>
+      <TransactionTable
+        transaction={transaction}
+        inputTransactions={inputTransactions}
+      />
+      ;
+    </main>
+  );
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
@@ -21,11 +27,24 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const res = await fetch(
     process.env.BACKEND_URL + `getrawtransaction?txid=${txid}&verbose=1`
   );
-  const resultJson = (await res.json()) as Result<Transaction>;
+  const transactionResult = (await res.json()) as Result<Transaction>;
+
+  const inputTransactions = await Promise.all(
+    transactionResult.result.vin.map(async (v) => {
+      if (v.txid) {
+        const inputTx = await fetch(
+          process.env.BACKEND_URL + `getrawtransaction${v.txid}&verbose=1`
+        );
+
+        return ((await inputTx.json()) as Result<Transaction>).result;
+      } else return null;
+    })
+  );
 
   return {
     props: {
-      transaction: resultJson.result,
+      transaction: transactionResult,
+      inputTransactions,
     },
   };
 };
