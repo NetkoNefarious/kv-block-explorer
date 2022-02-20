@@ -10,7 +10,7 @@ export interface Block {
   version: number;
   versionHex: string;
   merkleroot: string;
-  tx: Transaction[];
+  tx: string[] | Transaction[];
   time: number;
   mediantime: number;
   nonce: number;

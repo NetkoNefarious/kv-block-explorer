@@ -39,6 +39,6 @@ export default interface Transaction {
   hex: string;
   blockhash: string;
   confirmations: number;
-  time: number;
+  time?: number;
   blocktime: number;
 }

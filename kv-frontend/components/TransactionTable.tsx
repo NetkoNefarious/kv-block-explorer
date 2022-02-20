@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React from "react";
 import { Table } from "semantic-ui-react";
 import Transaction from "../model/Transaction";
@@ -14,36 +13,43 @@ const TransactionTable = ({
   transaction,
   inputTransactions,
 }: TransactionTableProps) => {
-  const time = new Date(transaction.time * 1000);
+  const time = transaction.time ? new Date(transaction.time * 1000) : undefined;
 
   const totalInput = inputTransactions
     .flatMap((v) => v.vout?.map((vo) => vo.value))
-    .reduce((prev, curr) => prev ?? 0 + (curr ?? 0), 0);
+    .filter((v) => typeof v !== "undefined")
+    .reduce((prev, curr) => prev + curr, 0);
 
-  const totalOutput =
-    transaction.vout
-      ?.map((v) => v.value)
-      .reduce((prev, curr) => prev + curr, 0) ?? 0;
-
-  const router = useRouter();
+  const totalOutput = transaction.vout
+    ?.map((v) => v.value)
+    .filter((v) => typeof v !== "undefined")
+    .reduce((prev, curr) => prev + curr, 0);
 
   return (
     <Table inverted className={tableStyles.table}>
       <Table.Body>
         <Table.Row>
-          <Table.HeaderCell>Hash</Table.HeaderCell>
+          <Table.HeaderCell>Id</Table.HeaderCell>
           <Table.Cell>{transaction.txid}</Table.Cell>
         </Table.Row>
         <Table.Row>
+          <Table.HeaderCell>Hash</Table.HeaderCell>
+          <Table.Cell>{transaction.hash}</Table.Cell>
+        </Table.Row>
+        <Table.Row>
           <Table.HeaderCell>Time</Table.HeaderCell>
-          <Table.Cell>{time.toLocaleString("hr-HR")}</Table.Cell>
+          <Table.Cell>
+            {time?.toLocaleString("hr-HR") ?? "No time set"}
+          </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.HeaderCell>Block hash</Table.HeaderCell>
           <Table.Cell>
-            <Link href={`/block/${transaction.blockhash}`}>
-              {transaction.blockhash}
-            </Link>
+            {transaction.blockhash ? (
+              <Link href={transaction.blockhash}>{transaction.blockhash}</Link>
+            ) : (
+              "None"
+            )}
           </Table.Cell>
         </Table.Row>
         <Table.Row>

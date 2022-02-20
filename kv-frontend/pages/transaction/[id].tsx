@@ -31,10 +31,8 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const inputTransactions = await Promise.all(
     transactionResult.result.vin.map(async (v) => {
       const inputTx = await fetch(
-        process.env.BACKEND_URL + `getrawtransaction${v.txid}&verbose=1`
+        process.env.BACKEND_URL + `getrawtransaction?txid=${v.txid}&verbose=1`
       );
-
-      console.log();
 
       return (await inputTx.json()) as Result<Transaction>;
     })
@@ -43,7 +41,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   return {
     props: {
       transaction: transactionResult.result,
-      inputTransactions: inputTransactions,
+      inputTransactions: inputTransactions.map((r) => r.result),
     },
   };
 };
